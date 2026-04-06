@@ -5,4 +5,4 @@ build/
 xcuserdata/
 
 # Secrets
-Pocasi/APIKey.swift
+APIKey.swift
