@@ -17,12 +17,35 @@ struct ContentView: View {
         Lokality(name: "Brno", latitude: 49.19506, longitude: 16.60684)
     ]
     
+    let iconSize: CGFloat = 30
+    
     var body: some View {
-        Map(coordinateRegion: $mapView, annotationItems: lokality) {lokalita in
-            MapMarker(coordinate: CLLocationCoordinate2D(latitude: lokalita.latitude, longitude: lokalita.longitude))
-        }
+        NavigationStack{
+            
+            Map(coordinateRegion: $mapView, annotationItems: lokality) {lokalita in
+                MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: lokalita.latitude, longitude: lokalita.longitude)){
+                    NavigationLink{
+                        DetailView(lokalita: lokalita)
+                    } label:{
+                            VStack {
+                                Image(systemName: "mappin.circle.fill")
+                                    .resizable()
+                                    .frame(width: iconSize, height: iconSize)
+                                    .foregroundColor(.red)
+                                
+                                Text(lokalita.name)
+                                    .foregroundColor(.primary)
+                                    .font(.caption)
+                            }
+                        }
+                    }
+                    
+                }
+            }
+            .ignoresSafeArea()
         }
     }
+    
 
 
 
