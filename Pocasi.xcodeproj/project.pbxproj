@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		FC8417B82F7C501500224651 /* Pocasi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pocasi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCB12E222F8439D500D48B7C /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +33,7 @@
 		FC8417AF2F7C501500224651 = {
 			isa = PBXGroup;
 			children = (
+				FCB12E222F8439D500D48B7C /* .gitignore */,
 				FC8417BA2F7C501500224651 /* Pocasi */,
 				FC8417B92F7C501500224651 /* Products */,
 			);
