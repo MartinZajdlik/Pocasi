@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DetailView: View {
     
+    @State private var weatherResult: VisualCrossing?
+    
     let lokalita: Lokality
     
     var body: some View {
@@ -16,11 +18,12 @@ struct DetailView: View {
         VStack {
             Text(lokalita.name)
             Text("\(lokalita.latitude), \(lokalita.longitude)")
+            Text("\(weatherResult?.currentConditions.temp ?? 0)")
                 .onAppear{
                     stahniData(lat: lokalita.latitude, lon: lokalita.longitude)
                 }
                     
-                }
+                
         }
     }
     
@@ -42,17 +45,19 @@ struct DetailView: View {
                 return
             }
             
-            if let json = try? JSONSerialization.jsonObject(with: data){
-                print(json)
+            if let json = try? JSONDecoder().decode(VisualCrossing.self, from: data) {
+                weatherResult = json
+                
+            }
                 
             }
             
-            
-        }
         task.resume()
+    }
+   
         
     }
-    
+
 
 
 
