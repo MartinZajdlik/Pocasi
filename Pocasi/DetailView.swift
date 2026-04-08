@@ -17,25 +17,52 @@ struct DetailView: View {
          
         ScrollView {
             VStack {
-                Text("Datum")
+                Text("\(Date.now, format: .dateTime.day().month().year())")
+                    .font(.callout)
+                    .padding(.bottom, 20)
                 
                 HStack {
-                    VStack {
-                        Text("popis")
-                        Text("teplota")
-                        Text("pocitova teplota")
+                    VStack (alignment: .leading){
+                        Text(weatherResult?.currentConditions.icon ?? "")
+                            .font(.system(size: 35))
+                            .padding(.bottom, -30)
+                        Text("\(Int(weatherResult?.currentConditions.temp ?? 0))°C")
+                            .font(.system(size: 65))
+                            .fontWeight(.black)
+                        Text("Pocitova teplota \(Int(weatherResult?.currentConditions.feelslike ?? 0))°C")
+                            .padding(.bottom, 50)
+                            .padding(.top, -40)
+                            .foregroundColor(.gray)
                         
                     }
                     Spacer()
                     
-                    Text("ikona")
+                    Image(systemName: "sun.max.fill")
+                        .resizable()
+                        .symbolRenderingMode(.multicolor)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 80)
+                        .padding(.trailing, 20)
                 }
                 
-                Text("dni....")
+                if let day = weatherResult?.days {
+                    
+                    ForEach(day, id: \.datetimeEpoch) { day in
+                        HStack {
+                            Text(denTydne(day.datetimeEpoch))
+                            Spacer()
+                            Text(day.icon)
+                            Spacer()
+                            Text("\(Int(day.temp))°C")
+                        }
+                    }
+                    
+                }
                 
             }
             
         }
+        .padding(20)
         .navigationTitle(lokalita.name)
         .onAppear{
             stahniData(lat: lokalita.latitude, lon: lokalita.longitude)
@@ -71,6 +98,14 @@ struct DetailView: View {
             }
             
         task.resume()
+    }
+    
+    func denTydne (_ num: Int) -> String {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate( "EEEE" )
+        let jsonDate = Date(timeIntervalSince1970: TimeInterval(num))
+        let dateString = formatter.string(from: jsonDate).capitalized
+        return dateString
     }
    
         
