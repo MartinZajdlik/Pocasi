@@ -14,17 +14,35 @@ struct DetailView: View {
     let lokalita: Lokality
     
     var body: some View {
-        
-        VStack {
-            Text(lokalita.name)
-            Text("\(lokalita.latitude), \(lokalita.longitude)")
-            Text("\(weatherResult?.currentConditions.temp ?? 0)")
-                .onAppear{
-                    stahniData(lat: lokalita.latitude, lon: lokalita.longitude)
-                }
-                    
+         
+        ScrollView {
+            VStack {
+                Text("Datum")
                 
+                HStack {
+                    VStack {
+                        Text("popis")
+                        Text("teplota")
+                        Text("pocitova teplota")
+                        
+                    }
+                    Spacer()
+                    
+                    Text("ikona")
+                }
+                
+                Text("dni....")
+                
+            }
+            
         }
+        .navigationTitle(lokalita.name)
+        .onAppear{
+            stahniData(lat: lokalita.latitude, lon: lokalita.longitude)
+        }
+        
+        
+        
     }
     
     func stahniData(lat:Double, lon: Double) {
