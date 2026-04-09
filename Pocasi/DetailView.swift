@@ -13,17 +13,48 @@ struct DetailView: View {
     
     let lokalita: Lokality
     
+    let icon = [
+        "snow":"cloud.snow.fill",
+        "rain":"cloud.rain.fill",
+        "fog":"cloud.fog.fill",
+        "wind":"wind",
+        "cloudy":"cloud.fill",
+        "partly-cloudy-day":"cloud.sun.fill",
+        "partly-cloudy-night":"cloud.moon.fill",
+        "clear-day":"sun.max.fill",
+        "clear-night":"moon.stars.fill"
+    ]
+    
+    var czDescription: String {
+        switch weatherResult?.currentConditions.icon {
+        case "snow":
+            return "Sněžení"
+        case "rain":
+            return "Déšt"
+        case "fog":
+            return "Mlha"
+        case "wind":
+            return "Vítr"
+        case "cloudy":
+            return "Oblačno"
+        case "partly-cloudy-day", "partly-cloudy-night":
+            return "Polooblačno"
+        default:
+            return "Jasno"
+        }
+    }
+    
     var body: some View {
          
         ScrollView {
-            VStack {
+            VStack(alignment: .leading) {
                 Text("\(Date.now, format: .dateTime.day().month().year())")
                     .font(.callout)
                     .padding(.bottom, 20)
                 
                 HStack {
                     VStack (alignment: .leading){
-                        Text(weatherResult?.currentConditions.icon ?? "")
+                        Text(czDescription)
                             .font(.system(size: 35))
                             .padding(.bottom, -30)
                         Text("\(Int(weatherResult?.currentConditions.temp ?? 0))°C")
@@ -37,12 +68,15 @@ struct DetailView: View {
                     }
                     Spacer()
                     
-                    Image(systemName: "sun.max.fill")
-                        .resizable()
-                        .symbolRenderingMode(.multicolor)
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 80)
-                        .padding(.trailing, 20)
+                    if let unwrapIkona = weatherResult?.currentConditions.icon {
+                        Image(systemName: icon[unwrapIkona] ?? "exclamationmark.square")
+                            .resizable()
+                            .symbolRenderingMode(.multicolor)
+                            .aspectRatio(contentMode: .fit)
+                            .frame(height: 80)
+                            .padding(.trailing, 20)
+                    }
+                    
                 }
                 
                 if let day = weatherResult?.days {
@@ -50,20 +84,30 @@ struct DetailView: View {
                     ForEach(day, id: \.datetimeEpoch) { day in
                         HStack {
                             Text(denTydne(day.datetimeEpoch))
+                                .frame(width: 100, alignment: .leading)
+                                
+                            
                             Spacer()
-                            Text(day.icon)
+                            Image(systemName: icon[day.icon] ?? "exclamationmark.square")
+                                .symbolRenderingMode(.multicolor)
                             Spacer()
                             Text("\(Int(day.temp))°C")
+                                .frame(width: 80, alignment: .trailing)
+                                
                         }
+                        .padding(.bottom, 3)
+                        
+                        Divider()
                     }
                     
                 }
                 
             }
             
+            .padding(20)
         }
-        .padding(20)
         .navigationTitle(lokalita.name)
+        .navigationBarTitleDisplayMode( .large )
         .onAppear{
             stahniData(lat: lokalita.latitude, lon: lokalita.longitude)
         }
