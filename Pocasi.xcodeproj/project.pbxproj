@@ -33,8 +33,8 @@
 		FC8417AF2F7C501500224651 = {
 			isa = PBXGroup;
 			children = (
-				FCB12E222F8439D500D48B7C /* .gitignore */,
 				FC8417BA2F7C501500224651 /* Pocasi */,
+				FCB12E222F8439D500D48B7C /* .gitignore */,
 				FC8417B92F7C501500224651 /* Products */,
 			);
 			sourceTree = "<group>";

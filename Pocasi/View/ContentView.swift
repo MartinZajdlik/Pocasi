@@ -8,21 +8,13 @@ import MapKit
 import SwiftUI
 
 struct ContentView: View {
-    @State private var mapView = MKCoordinateRegion(
-        center: CLLocationCoordinate2D(latitude: 49.1969, longitude: 17.6242),
-        span: MKCoordinateSpan(latitudeDelta: 7, longitudeDelta: 7))
     
-    let lokality = [
-        Lokality(name: "Ostrožská Lhota", latitude: 48.97559, longitude: 17.46751),
-        Lokality(name: "Brno", latitude: 49.19506, longitude: 16.60684)
-    ]
-    
-    let iconSize: CGFloat = 30
+    @StateObject private var ContentModel = ContentViewModel()
     
     var body: some View {
         NavigationStack{
             
-            Map(coordinateRegion: $mapView, annotationItems: lokality) {lokalita in
+            Map(coordinateRegion: $ContentModel.mapView, annotationItems: ContentModel.lokality) {lokalita in
                 MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: lokalita.latitude, longitude: lokalita.longitude)){
                     NavigationLink{
                         DetailView(lokalita: lokalita)
@@ -30,7 +22,7 @@ struct ContentView: View {
                             VStack {
                                 Image(systemName: "mappin.circle.fill")
                                     .resizable()
-                                    .frame(width: iconSize, height: iconSize)
+                                    .frame(width: ContentModel.iconSize, height: ContentModel.iconSize)
                                     .foregroundColor(.red)
                                 
                                 Text(lokalita.name)
